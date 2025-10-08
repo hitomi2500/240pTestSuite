@@ -9,30 +9,140 @@
 #include "ire.h"
 #include "image_big_digits.h"
 
+void get_peripheral_name(smpc_peripheral_t *peripheral, char * name)
+{
+	switch (peripheral->type)
+	{
+		case ID_DIGITAL:
+			sprintf(name,"%d:Digital pad",peripheral->port);
+			break;
+		case ID_RACING:
+			sprintf(name,"%d:Racing wheel",peripheral->port);
+			break;
+		case ID_ANALOG:
+			sprintf(name,"%d:3D pad",peripheral->port);
+			break;
+		case ID_MOUSE:
+			sprintf(name,"%d:Mouse",peripheral->port);
+			break;
+		case ID_KEYBOARD:
+			sprintf(name,"%d:Keyboard(J)",peripheral->port);
+			break;
+		case ID_MD3B:
+			sprintf(name,"%d:MD 3-pad",peripheral->port);
+			break;
+		case ID_MD6B:
+			sprintf(name,"%d:MD 6-pad",peripheral->port);
+			break;
+		case ID_MDMOUSE:
+			sprintf(name,"%d:MD mouse",peripheral->port);
+			break;
+		case ID_GUN:
+			sprintf(name,"%d:Gun",peripheral->port);
+			break;
+	}
+}
+
+void get_peripheral_state(smpc_peripheral_t *peripheral, char * string)
+{
+	smpc_peripheral_digital_t digital;
+	sprintf(string,"");
+	switch (peripheral->type)
+	{
+		case ID_DIGITAL:
+			smpc_peripheral_digital_get(peripheral,&digital);
+			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
+			if (digital.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
+			if (digital.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
+			if (digital.pressed.button.l) strcat(string,"#GL#W "); else strcat(string,"L ");
+			if (digital.pressed.button.r) strcat(string,"#GR#W "); else strcat(string,"R ");
+			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			break;
+		case ID_RACING:
+			break;
+		case ID_ANALOG:
+			break;
+		case ID_MOUSE:
+			break;
+		case ID_KEYBOARD:
+			break;
+		case ID_MD3B:
+			break;
+		case ID_MD6B:
+			break;
+		case ID_MDMOUSE:
+			break;
+		case ID_GUN:
+			break;
+		default:
+			sprintf(string,"unknown type 0x%x, %d bytes",peripheral->type,peripheral->size);
+			break;
+	}
+}
+
 void update_controller(video_screen_mode_t screenmode)
 {
 	int x,y;
+	char buf[256];
+	smpc_peripheral_t *peripheral;
+    smpc_peripheral_t *tmp_peripheral;
+
+	y = 10;
 	for (int port = 1; port < 3; port++)
 	{
-		x = 10;
-		y = 10+port*10;
-		char buf[16];
-		smpc_peripheral_digital_port(port, &controller);
-		sprintf(buf,"Port %d :",port);
-		/*smpc_peripheral_port_t * _port = smpc_peripheral_raw_port(port);
-		smpc_peripheral_t *peripheral;
-        smpc_peripheral_t *tmp_peripheral;
-		int per=0;
+		const smpc_peripheral_port_t * const _port = smpc_peripheral_raw_port(port);
+		x = 5;
+		if (_port->peripheral->size == 0)
+		{
+			//either multitap or disconnected
+			if (_port->peripheral->capacity == 0) 
+				sprintf(buf,"Port %d : unconnected",port);
+			else
+				sprintf(buf,"Port %d : multitap (%d ports)",port,_port->peripheral->capacity); 
+		}
+		else
+		{
+			sprintf(buf,"Port %d : direct connection",port);
+		}
+		ClearText(x,y,strlen(buf)*6,8);
+		DrawString(buf, x, y, FONT_MAGENTA); y+=10;
+
+		//drawing the directly connected peripheral
+		if (_port->peripheral->size)
+		{
+			x = 10;
+			_port->peripheral->port = 0;//setting port to 0 for direct connection
+			get_peripheral_name(_port->peripheral,buf);
+			ClearText(x,y,strlen(buf)*6,8);
+			DrawString(buf, x, y, FONT_YELLOW);
+			x = 100;
+			get_peripheral_state(_port->peripheral,buf);
+			ClearText(x,y,strlen(buf)*6,8);
+			DrawString(buf, x, y, FONT_WHITE); y+=10;
+		}
+		
+		//drawing the list
         for (peripheral = TAILQ_FIRST(&_port->peripherals);
 			(peripheral != NULL) && (tmp_peripheral = TAILQ_NEXT(peripheral, peripherals), 1);
             	peripheral = tmp_peripheral) {
-					sprintf(buf,"Port 1 per %i",per);
-					DrawString(buf, x, y, FONT_WHITE);
-					x+=_fw*10;
-					per++;
-				}*/
-		DrawString(buf, x, y, FONT_MAGENTA);
-		x+=_fw*10;
+					x = 10;
+					get_peripheral_name(peripheral,buf);
+					ClearText(x,y,strlen(buf)*6,8);
+					DrawString(buf, x, y, FONT_YELLOW);
+					x = 100;
+					get_peripheral_state(peripheral,buf);
+					ClearText(x,y,strlen(buf)*6,8);
+					DrawString(buf, x, y, FONT_WHITE); y+=10;
+				}
+
+		/*x+=_fw*10;
 		if (controller.pressed.button.a)
 			DrawString("A", x, y, FONT_GREEN);
 		else
@@ -96,7 +206,7 @@ void update_controller(video_screen_mode_t screenmode)
 		if (controller.pressed.button.start)
 			DrawString("Start", x, y, FONT_GREEN);
 		else
-			DrawString("Start", x, y, FONT_WHITE);
+			DrawString("Start", x, y, FONT_WHITE);*/
 	}
 	DrawString("Press Left + Start on controller 1 to Exit", 20, 200, FONT_WHITE);
 }
@@ -174,8 +284,9 @@ void hwtest_controller(video_screen_mode_t screenmode)
 		else
 			key_pressed = false;
 		vdp2_tvmd_vblank_out_wait();
+		update_controller(curr_screenmode);
 		vdp2_tvmd_vblank_in_wait();
 
-		update_controller(curr_screenmode);
+		
 	}
 }

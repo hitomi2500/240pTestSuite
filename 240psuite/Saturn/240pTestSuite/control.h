@@ -22,7 +22,7 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 
-extern struct smpc_peripheral_digital controller;
+extern smpc_peripheral_digital_t controller;
 
 void InitControllers();
 void wait_for_key_press();

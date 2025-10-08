@@ -23,7 +23,7 @@
 
 #include "control.h"
 
-struct smpc_peripheral_digital controller;
+smpc_peripheral_digital_t controller;
 
 void InitControllers()
 {

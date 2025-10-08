@@ -76,7 +76,6 @@
 extern uint8_t asset_bootlogo_bg[];
 extern uint8_t asset_bootlogo_bg_end[];
 
-static smpc_peripheral_digital_t _digital;
 int global_frame_count;
 
 static void suite_vblank_out_handler(void *work __unused)
