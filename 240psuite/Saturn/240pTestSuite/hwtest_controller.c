@@ -26,7 +26,7 @@ void get_peripheral_name(smpc_peripheral_t *peripheral, char * name)
 			sprintf(name,"%d:Mouse",peripheral->port);
 			break;
 		case ID_KEYBOARD:
-			sprintf(name,"%d:Keyboard(J)",peripheral->port);
+			sprintf(name,"%d:Keyboard",peripheral->port);
 			break;
 		case ID_MD3B:
 			sprintf(name,"%d:MD 3-pad",peripheral->port);
@@ -40,13 +40,23 @@ void get_peripheral_name(smpc_peripheral_t *peripheral, char * name)
 		case ID_GUN:
 			sprintf(name,"%d:Gun",peripheral->port);
 			break;
+		default:
+			sprintf(name,"%d:Unknown(0x%x)",peripheral->port,peripheral->type);
+			break;
 	}
 }
 
-void get_peripheral_state(smpc_peripheral_t *peripheral, char * string)
+void get_peripheral_line(smpc_peripheral_t *peripheral, char * string, char * string2)
 {
+	char buf[32];
 	smpc_peripheral_digital_t digital;
-	sprintf(string,"");
+	smpc_peripheral_analog_t analog;
+	smpc_peripheral_racing_t racing;
+	smpc_peripheral_mouse_t mouse;
+	smpc_peripheral_keyboard_t keyboard;
+	get_peripheral_name(peripheral,buf);
+	sprintf(string,"#C%s#W : ",buf);
+	string2[0] = 0;
 	switch (peripheral->type)
 	{
 		case ID_DIGITAL:
@@ -66,23 +76,113 @@ void get_peripheral_state(smpc_peripheral_t *peripheral, char * string)
 			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
 			break;
 		case ID_RACING:
+			for (int i=0;i<3;i++)
+	        	racing.raw[i] = peripheral->data[i];
+			if (racing.button.a_trg) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (racing.button.b_trg) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (racing.button.c_trg) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (racing.button.x_trg) strcat(string,"#GX#W "); else strcat(string,"X ");
+			if (racing.button.y_trg) strcat(string,"#GY#W "); else strcat(string,"Y ");
+			if (racing.button.z_trg) strcat(string,"#GZ#W "); else strcat(string,"Z ");
+			if (racing.button.l_trg) strcat(string,"#GL#W "); else strcat(string,"L ");
+			if (racing.button.r_trg) strcat(string,"#GR#W "); else strcat(string,"R ");
+			if (racing.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (racing.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (racing.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (racing.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (racing.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			sprintf(buf,"W=%3d",racing.button.wheel); strcat(string2,buf);
 			break;
 		case ID_ANALOG:
+			for (int i=0;i<6;i++)
+	        	analog.pressed.raw[i] = peripheral->data[i];
+			if (analog.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (analog.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (analog.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (analog.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
+			if (analog.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
+			if (analog.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
+			if (analog.pressed.button.l) strcat(string,"#GL#W "); else strcat(string,"L ");
+			if (analog.pressed.button.r) strcat(string,"#GR#W "); else strcat(string,"R ");
+			if (analog.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (analog.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (analog.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (analog.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (analog.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			sprintf(buf,"X = %3d ",analog.pressed.button.axis.x_axis); strcat(string2,buf);
+			sprintf(buf,"Y = %3d ",analog.pressed.button.axis.y_axis); strcat(string2,buf);
+			sprintf(buf,"L = %3d ",analog.pressed.button.trigger.l); strcat(string2,buf);
+			sprintf(buf,"R = %3d ",analog.pressed.button.trigger.r); strcat(string2,buf);
 			break;
 		case ID_MOUSE:
+		case ID_MDMOUSE:
+			for (int i=0;i<3;i++)
+	        	mouse.raw[i] = peripheral->data[i];
+			if (mouse.button.m_btn) strcat(string,"#GM#W "); else strcat(string,"M ");
+			if (mouse.button.r_btn) strcat(string,"#GR#W "); else strcat(string,"R ");
+			if (mouse.button.l_btn) strcat(string,"#GL#W "); else strcat(string,"L ");
+			if (mouse.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (mouse.button.x_sgn) strcat(string,"#GX+#W "); else strcat(string,"X- ");
+			if (mouse.button.y_sgn) strcat(string,"#GY+#W "); else strcat(string,"Y- ");
+			if (mouse.button.x_ovr) strcat(string,"#GXo#W "); else strcat(string,"Xo ");
+			if (mouse.button.y_ovr) strcat(string,"#GYo#W "); else strcat(string,"Yo ");
+			sprintf(buf,"X = %3d ",mouse.button.x); strcat(string,buf);
+			sprintf(buf,"Y = %3d ",mouse.button.y); strcat(string,buf);
 			break;
 		case ID_KEYBOARD:
+			for (int i=0;i<4;i++)
+	        	keyboard.raw[i] = peripheral->data[i];
+			if (keyboard.button.a_trg) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (keyboard.button.b_trg) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (keyboard.button.c_trg) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (keyboard.button.x_trg) strcat(string,"#GX#W "); else strcat(string,"X ");
+			if (keyboard.button.y_trg) strcat(string,"#GY#W "); else strcat(string,"Y ");
+			if (keyboard.button.z_trg) strcat(string,"#GZ#W "); else strcat(string,"Z ");
+			if (keyboard.button.l_trg) strcat(string,"#GL#W "); else strcat(string,"L ");
+			if (keyboard.button.r_trg) strcat(string,"#GR#W "); else strcat(string,"R ");
+			if (keyboard.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (keyboard.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (keyboard.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (keyboard.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (keyboard.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (keyboard.button.caps_lock) strcat(string2,"#GCaps#W "); else strcat(string2,"Caps ");
+			if (keyboard.button.num_lock) strcat(string2,"#GNum#W "); else strcat(string2,"Num ");
+			if (keyboard.button.scr_lock) strcat(string2,"#GScroll#W "); else strcat(string2,"Scroll ");
+			if (keyboard.button.mak_flag) strcat(string2,"#GMake#W "); else strcat(string2,"Make ");
+			if (keyboard.button.brk_flag) strcat(string2,"#GBreak#W "); else strcat(string2,"Break ");
+			sprintf(buf,"Code = %2d ",keyboard.button.keycode); strcat(string2,buf);
 			break;
 		case ID_MD3B:
+			smpc_peripheral_digital_get(peripheral,&digital);
+			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
 			break;
 		case ID_MD6B:
-			break;
-		case ID_MDMOUSE:
+			smpc_peripheral_digital_get(peripheral,&digital);
+			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
+			if (digital.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
+			if (digital.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
+			if (digital.pressed.button.r) strcat(string,"#GMode#W "); else strcat(string,"Mode ");
+			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
 			break;
 		case ID_GUN:
-			break;
 		default:
-			sprintf(string,"unknown type 0x%x, %d bytes",peripheral->type,peripheral->size);
+			sprintf(string,"Raw = ");
+			for (int i=0;i<peripheral->size;i++)
+				sprintf(buf,"%2d ",peripheral->data[i]); strcat(string,buf);
 			break;
 	}
 }
@@ -91,9 +191,14 @@ void update_controller(video_screen_mode_t screenmode)
 {
 	int x,y;
 	char buf[256];
+	char buf2[256];
 	smpc_peripheral_t *peripheral;
     smpc_peripheral_t *tmp_peripheral;
 
+	//can't draw all the text each frame, using buffering
+	uint8_t * buffer = (uint8_t *)HWRAM(0xD0000);
+
+	ClearTextLayerOnBuffer(buffer);
 	y = 10;
 	for (int port = 1; port < 3; port++)
 	{
@@ -111,21 +216,23 @@ void update_controller(video_screen_mode_t screenmode)
 		{
 			sprintf(buf,"Port %d : direct connection",port);
 		}
-		ClearText(x,y,strlen(buf)*6,8);
-		DrawString(buf, x, y, FONT_MAGENTA); y+=10;
+		DrawStringOnBuffer(buf, x, y, FONT_MAGENTA,buffer); y+=10;
 
 		//drawing the directly connected peripheral
 		if (_port->peripheral->size)
 		{
 			x = 10;
 			_port->peripheral->port = 0;//setting port to 0 for direct connection
-			get_peripheral_name(_port->peripheral,buf);
-			ClearText(x,y,strlen(buf)*6,8);
-			DrawString(buf, x, y, FONT_YELLOW);
-			x = 100;
-			get_peripheral_state(_port->peripheral,buf);
-			ClearText(x,y,strlen(buf)*6,8);
-			DrawString(buf, x, y, FONT_WHITE); y+=10;
+			//get_peripheral_name(_port->peripheral,buf);
+			//DrawStringOnBuffer(buf, x, y, FONT_YELLOW,buffer);
+			x = 10;
+			get_peripheral_line(_port->peripheral,buf,buf2);
+			DrawStringOnBuffer(buf, x, y, FONT_WHITE,buffer); y+=10;
+			
+			if (strlen(buf2)>0) {
+				x = 30;
+				DrawStringOnBuffer(buf2, x, y, FONT_WHITE,buffer); y+=10;
+			}
 		}
 		
 		//drawing the list
@@ -133,82 +240,28 @@ void update_controller(video_screen_mode_t screenmode)
 			(peripheral != NULL) && (tmp_peripheral = TAILQ_NEXT(peripheral, peripherals), 1);
             	peripheral = tmp_peripheral) {
 					x = 10;
-					get_peripheral_name(peripheral,buf);
-					ClearText(x,y,strlen(buf)*6,8);
-					DrawString(buf, x, y, FONT_YELLOW);
-					x = 100;
-					get_peripheral_state(peripheral,buf);
-					ClearText(x,y,strlen(buf)*6,8);
-					DrawString(buf, x, y, FONT_WHITE); y+=10;
+					//get_peripheral_name(peripheral,buf);
+					//DrawStringOnBuffer(buf, x, y, FONT_YELLOW,buffer);
+					x = 10;
+					get_peripheral_line(peripheral,buf,buf2);
+					DrawStringOnBuffer(buf, x, y, FONT_WHITE,buffer); y+=10;
+					if (strlen(buf2)>0) {
+						x = 30;
+						DrawStringOnBuffer(buf2, x, y, FONT_WHITE,buffer); y+=10;
+					}
 				}
-
-		/*x+=_fw*10;
-		if (controller.pressed.button.a)
-			DrawString("A", x, y, FONT_GREEN);
-		else
-			DrawString("A", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.b)
-			DrawString("B", x, y, FONT_GREEN);
-		else
-			DrawString("B", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.c)
-			DrawString("C", x, y, FONT_GREEN);
-		else
-			DrawString("C", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.x)
-			DrawString("X", x, y, FONT_GREEN);
-		else
-			DrawString("X", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.y)
-			DrawString("Y", x, y, FONT_GREEN);
-		else
-			DrawString("Y", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.z)
-			DrawString("Z", x, y, FONT_GREEN);
-		else
-			DrawString("Z", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.l)
-			DrawString("L", x, y, FONT_GREEN);
-		else
-			DrawString("L", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.r)
-			DrawString("R", x, y, FONT_GREEN);
-		else
-			DrawString("R", x, y, FONT_WHITE);
-		x+=_fw*2;
-		if (controller.pressed.button.up)
-			DrawString("Up", x, y, FONT_GREEN);
-		else
-			DrawString("Up", x, y, FONT_WHITE);
-		x+=_fw*3;
-		if (controller.pressed.button.down)
-			DrawString("Down", x, y, FONT_GREEN);
-		else
-			DrawString("Down", x, y, FONT_WHITE);
-		x+=_fw*5;
-		if (controller.pressed.button.left)
-			DrawString("Left", x, y, FONT_GREEN);
-		else
-			DrawString("Left", x, y, FONT_WHITE);
-		x+=_fw*5;
-		if (controller.pressed.button.right)
-			DrawString("Right", x, y, FONT_GREEN);
-		else
-			DrawString("Right", x, y, FONT_WHITE);
-		x+=_fw*6;
-		if (controller.pressed.button.start)
-			DrawString("Start", x, y, FONT_GREEN);
-		else
-			DrawString("Start", x, y, FONT_WHITE);*/
 	}
-	DrawString("Press Left + Start on controller 1 to Exit", 20, 200, FONT_WHITE);
+	DrawStringOnBuffer("Press Left + Start on controller 1 to Exit", 20, 200, FONT_WHITE,buffer);
+	
+	//syncing data
+	vdp2_tvmd_vblank_out_wait();
+	vdp2_tvmd_vblank_in_wait();
+
+	//copying buffer to VDP1 quad
+	vdp1_vram_partitions_t vdp1_vram_partitions;
+    vdp1_vram_partitions_get(&vdp1_vram_partitions);
+	scu_dma_transfer((scu_dma_level_t)0,(uint8_t *)vdp1_vram_partitions.texture_base,buffer,320*224);
+	//not waiting for end, because it will certainly be over when we get here again
 }
 
 
@@ -283,10 +336,10 @@ void hwtest_controller(video_screen_mode_t screenmode)
 		}
 		else
 			key_pressed = false;
-		vdp2_tvmd_vblank_out_wait();
-		update_controller(curr_screenmode);
-		vdp2_tvmd_vblank_in_wait();
-
 		
+		//	vdp2_tvmd_vblank_out_wait();
+		//vdp2_tvmd_vblank_in_wait();
+
+		update_controller(curr_screenmode);		
 	}
 }

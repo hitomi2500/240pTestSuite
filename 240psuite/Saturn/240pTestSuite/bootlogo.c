@@ -2,7 +2,7 @@
 #include "image_buzzbomber.h"
 #include "image_not_really.h"
 
-void _yaul_early_access()
+void user_early_init()
 {
     //nothing is initialized yet. so we can't use most of the yaul functionality
     //checking if there actually is logo on-screen (in some cases there might be not, like ODE or HLE BIOS in emulators)

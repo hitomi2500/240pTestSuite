@@ -143,6 +143,8 @@ int main(void)
 	//register vblank handler
 	vdp_sync_vblank_out_set(suite_vblank_out_handler, NULL);
 
+	hwtest_controller(screenMode);//debug
+
 	while(true)
 	{
 		vdp2_tvmd_vblank_out_wait();

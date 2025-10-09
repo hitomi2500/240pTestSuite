@@ -43,10 +43,15 @@ extern int SuiteFont_len;
 
 void SetFontPalette();
 void DrawString(char *str, unsigned int x, unsigned int y, unsigned int palette);
+void DrawStringOnBuffer(char *str, unsigned int x, unsigned int y, unsigned int palette, uint8_t * buffer);
 void ClearText(int left, int top, int width, int height);
+void ClearTextOnBuffer(int left, int top, int width, int height, uint8_t * buffer);
 void ClearTextLayer();
+void ClearTextLayerOnBuffer(uint8_t * buffer);
 
 void DrawChar(unsigned int x, unsigned int y, char c, unsigned int palette, bool transparent);
+void DrawCharOnBuffer(unsigned int x, unsigned int y, char c, unsigned int palette, bool transparent, uint8_t * buffer);
 void DrawStringWithBackground(char *str, unsigned int x, unsigned int y, unsigned int palette, unsigned int bg_palette);
+void DrawStringWithBackgroundOnBuffer(char *str, unsigned int x, unsigned int y, unsigned int palette, unsigned int bg_palette, uint8_t * buffer);
 
 #endif /* !FONT_H */
