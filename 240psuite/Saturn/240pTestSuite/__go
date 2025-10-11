@@ -8,4 +8,5 @@ if test -f /f/WASCALDR.BIN; then
 else
   echo "No flash found, not updating WASCALDR.BIN"
 fi
-yabause -i 240pSuite.iso
+#/opt/emulators/ymir/ymir-sdl3 240pSuite.iso
+/opt/emulators/yabause/yabause -i 240pSuite.iso

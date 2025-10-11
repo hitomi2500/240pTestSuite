@@ -38,6 +38,11 @@
 #include "ire.h"
 #include "video_vdp2.h"
 #include "background.h"
+#include "ponesound.h"
+
+#include "audio.h"
+#include "audiotest_sound.h"
+#include "audiotest_sync.h"
 
 #include "pattern_100ire.h"
 #include "pattern_colorbars.h"
@@ -73,8 +78,16 @@
 #define MENU_CONFIGURATION 7
 #define MENU_VIDEO_TEST_SCROLL_HV_SELECT 8
 
+#define PCM_LOAD_OFFSET (0x408 + DRV_SYS_END + 0x20)
+
 extern uint8_t asset_bootlogo_bg[];
 extern uint8_t asset_bootlogo_bg_end[];
+extern uint8_t asset_sound_driver[];
+extern uint8_t asset_sound_driver_end[];
+extern uint8_t asset_tones_pcm[];
+extern uint8_t asset_tones_pcm_end[];
+extern uint8_t asset_beep_pcm[];
+extern uint8_t asset_beep_pcm_end[];
 
 int global_frame_count;
 
@@ -123,9 +136,6 @@ int main(void)
 	//detect color system
 	screenMode.colorsystem = vdp2_tvmd_tv_standard_get();
 
-	//debug force mode
-	//screenMode.scanmode = VIDEO_SCANMODE_480P;
-
 	//measure frame clock
 	volatile int frame_counter=0;
 	while (vdp2_tvmd_vblank_out())
@@ -135,13 +145,18 @@ int main(void)
 	while (vdp2_tvmd_vblank_out())
 		frame_counter++;
 
-	//if(!fs_init())
-	//	DrawString("FS INIT FAILED!\n", 120, 20, 1);
 	redrawMenu = true;
 	redrawBG = true;
 
 	//register vblank handler
 	vdp_sync_vblank_out_set(suite_vblank_out_handler, NULL);
+	
+	//sound stuff
+	ponesound_load_driver(asset_sound_driver, asset_sound_driver_end - asset_sound_driver,ADX_MASTER_768);//load driver binary to SMPC
+	ponesound_load_8bit_pcm(asset_tones_pcm, asset_tones_pcm_end - asset_tones_pcm,PCM_NUMBER_TONES,PCM_LOAD_OFFSET,15360);//Load 8-bit PCM sample
+	ponesound_load_8bit_pcm(asset_beep_pcm, asset_beep_pcm_end - asset_beep_pcm,PCM_NUMBER_BEEP,PCM_LOAD_OFFSET + (asset_tones_pcm_end - asset_tones_pcm),15360);//Load 8-bit PCM sample
+	ponesound_set_master_volume(0xF);//Set volume
+	vdp_sync_vblank_in_set(ponesound_vblank_rq, NULL);//Register vblank irq for ponesound scheduler
 
 	while(true)
 	{
@@ -633,10 +648,10 @@ int main(void)
 						switch(sel)
 						{
 							case 0:
-								//audiotest_sound(screenMode);
+								audiotest_sound(screenMode);
 								break;							
 							case 1:
-								//audiotest_sync(screenMode);
+								audiotest_sync(screenMode);
 								break;							
 							case 2:
 								menu_id = MENU_MAIN;

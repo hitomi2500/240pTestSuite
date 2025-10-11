@@ -19,7 +19,10 @@ BUILTIN_ASSETS+= \
 	assets/SBACK2.BG;asset_sonicback2_bg \
 	assets/SBACK3.BG;asset_sonicback3_bg \
 	assets/SBACK4.BG;asset_sonicback4_bg \
-	assets/DONNA.BG;asset_donna_bg
+	assets/DONNA.BG;asset_donna_bg \
+	assets/SDRV.BIN;asset_sound_driver \
+	assets/BEEP.PCM;asset_beep_pcm \
+	assets/TONES.PCM;asset_tones_pcm
 
 SH_PROGRAM:= 240pSuite
 SH_SRCS:= \
@@ -34,6 +37,8 @@ SH_SRCS:= \
     control.c \
     ire.c \
     help.c \
+    audiotest_sound.c \
+    audiotest_sync.c \
     hwtest_controller.c \
     hwtest_sysinfo.c \
     image_big_digits.c \
@@ -53,6 +58,7 @@ SH_SRCS:= \
     pattern_sharpness.c \
     pattern_smpte.c \
     pattern_whitescreen.c \
+    ponesound.c \
     videotest_backlit_zone.c \
     videotest_checkerboard.c \
     videotest_diagonal.c \
