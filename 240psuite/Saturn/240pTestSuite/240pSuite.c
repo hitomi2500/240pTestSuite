@@ -143,8 +143,6 @@ int main(void)
 	//register vblank handler
 	vdp_sync_vblank_out_set(suite_vblank_out_handler, NULL);
 
-	hwtest_controller(screenMode);//debug
-
 	while(true)
 	{
 		vdp2_tvmd_vblank_out_wait();
@@ -166,7 +164,7 @@ int main(void)
 				case MENU_MAIN:
 					DrawString("Test Patterns", x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;	
 					DrawString("Video Tests", x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;	
-					//DrawString("Audio Tests",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
+					DrawString("Audio Tests",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("Hardware Tests",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					pos++;
 					DrawString("Configuration",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
@@ -238,7 +236,7 @@ int main(void)
 					menu_size = 5;
 					break;
 				case MENU_HARDWARE_TESTS:
-					DrawString("Controller Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
+					DrawString("Express Peripheral Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					//DrawString("Controller Ports Device List",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("System Information",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					//DrawString("Memory Viewer",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
@@ -427,22 +425,22 @@ int main(void)
 								sel = 0;
 								redrawMenu = true;
 								break;
-							/*case 2:
-								menu_id = MENU_AUDIO_TESTS;
-								sel = 0;
-								redrawMenu = true;
-								break;*/
 							case 2:
-								menu_id = MENU_HARDWARE_TESTS;
+								menu_id = MENU_AUDIO_TESTS;
 								sel = 0;
 								redrawMenu = true;
 								break;
 							case 3:
-								menu_id = MENU_CONFIGURATION;
+								menu_id = MENU_HARDWARE_TESTS;
 								sel = 0;
 								redrawMenu = true;
 								break;
 							case 4:
+								menu_id = MENU_CONFIGURATION;
+								sel = 0;
+								redrawMenu = true;
+								break;
+							case 5:
 								//go to credits
 								vdp2_sync_wait();
 								wait_for_key_unpress();
@@ -450,7 +448,7 @@ int main(void)
 								redrawBG = true;
 								redrawMenu = true;
 								break;
-							case 5:
+							case 6:
 								help(screenMode);
 								redrawMenu = true;
 								redrawBG = true;
@@ -635,10 +633,10 @@ int main(void)
 						switch(sel)
 						{
 							case 0:
-								//sound
+								//audiotest_sound(screenMode);
 								break;							
 							case 1:
-								//audio sync
+								//audiotest_sync(screenMode);
 								break;							
 							case 2:
 								menu_id = MENU_MAIN;
@@ -697,7 +695,7 @@ int main(void)
 									screenMode.scanmode = VIDEO_SCANMODE_240I;
 								if (VIDEO_SCANMODE_480P == screenMode.scanmode)
 									screenMode.y_res = VDP2_TVMD_VERT_240; //only x480 in 480p mode
-								update_screen_mode(screenMode,false);
+								update_screen_mode(screenMode,BITMAP_MODE_NONE);
 								redrawBG = true;
 								redrawMenu = true;
 								break;
@@ -716,7 +714,7 @@ int main(void)
 									if (screenMode.y_res > VDP2_TVMD_VERT_256)
 										screenMode.y_res = VDP2_TVMD_VERT_224;
 								}
-								update_screen_mode(screenMode,false);
+								update_screen_mode(screenMode,BITMAP_MODE_NONE);
 								redrawBG = true;
 								redrawMenu = true;
 								break;
@@ -728,7 +726,7 @@ int main(void)
 									screenMode.x_res = VIDEO_X_RESOLUTION_320;
 									screenMode.x_res_doubled = !screenMode.x_res_doubled;
 								}
-								update_screen_mode(screenMode,false);
+								update_screen_mode(screenMode,BITMAP_MODE_NONE);
 								redrawBG = true;
 								redrawMenu = true;
 								break;

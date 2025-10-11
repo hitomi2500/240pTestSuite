@@ -253,7 +253,7 @@ void pattern_sharpness(video_screen_mode_t screenmode)
 {
 	curr_screenmode = screenmode;
 	int iPattern = 0;
-	update_screen_mode(curr_screenmode,true); //re-initing in bmp mode
+	update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS); //re-initing in bmp mode
 	draw_sharpness(curr_screenmode,false);
 
 	wait_for_key_unpress();
@@ -269,13 +269,13 @@ void pattern_sharpness(video_screen_mode_t screenmode)
 			curr_screenmode = prev_screen_mode(curr_screenmode);
 			if (iPattern)
 			{
-				update_screen_mode(curr_screenmode,false);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 				draw_sharpness_pattern2(curr_screenmode);
 			}
 			else
 			{
-				update_screen_mode(curr_screenmode,true);
-				update_screen_mode(curr_screenmode,true);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 				draw_sharpness(curr_screenmode,false);
 			}
 			print_screen_mode(curr_screenmode);
@@ -287,13 +287,13 @@ void pattern_sharpness(video_screen_mode_t screenmode)
 			curr_screenmode = next_screen_mode(curr_screenmode);
 			if (iPattern)
 			{
-				update_screen_mode(curr_screenmode,false);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 				draw_sharpness_pattern2(curr_screenmode);
 			}
 			else
 			{
-				update_screen_mode(curr_screenmode,true);
-				update_screen_mode(curr_screenmode,true);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 				draw_sharpness(curr_screenmode,false);
 			}
 			print_screen_mode(curr_screenmode);
@@ -306,13 +306,13 @@ void pattern_sharpness(video_screen_mode_t screenmode)
 			iPattern = iPattern ? 0 : 1;
 			if (iPattern)
 			{
-				update_screen_mode(curr_screenmode,false);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 				draw_sharpness_pattern2(curr_screenmode);
 			}
 			else
 			{
-				update_screen_mode(curr_screenmode,true);
-				update_screen_mode(curr_screenmode,true);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+				update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 				draw_sharpness(curr_screenmode,false);
 			}
 			wait_for_key_unpress();
@@ -321,7 +321,7 @@ void pattern_sharpness(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		vdp2_tvmd_vblank_in_wait();

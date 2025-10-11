@@ -124,7 +124,7 @@ void videotest_diagonal(video_screen_mode_t screenmode)
 		if ( (controller.pressed.button.l) )
 		{
 			curr_screenmode = prev_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,false);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 			update_diagonal(screenmode,angle,angle_step_div);
 			print_screen_mode(curr_screenmode);
 			wait_for_key_unpress();
@@ -133,7 +133,7 @@ void videotest_diagonal(video_screen_mode_t screenmode)
 		else if ( (controller.pressed.button.r) )
 		{
 			curr_screenmode = next_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,false);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 			update_diagonal(screenmode,angle,angle_step_div);
 			print_screen_mode(curr_screenmode);
 			wait_for_key_unpress();
@@ -165,7 +165,7 @@ void videotest_diagonal(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		vdp2_tvmd_vblank_in_wait();

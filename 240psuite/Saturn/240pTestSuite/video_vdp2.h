@@ -89,7 +89,7 @@
 void video_vdp2_set_cycle_patterns_cpu();
 void video_vdp2_set_cycle_patterns_nbg(video_screen_mode_t screen_mode);
 void video_vdp2_set_cycle_patterns_nbg_bmp(video_screen_mode_t screen_mode);
-void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode);
+void video_vdp2_init(video_screen_mode_t screen_mode, bitmap_mode_t bmp_mode);
 
 void video_vdp2_set_palette_part(int number, rgb888_t * pointer, int start, int end);
 void video_vdp2_clear_palette(int number);

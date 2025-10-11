@@ -544,7 +544,7 @@ void pattern_monoscope(video_screen_mode_t screenmode)
 {
 	curr_screenmode = screenmode;
 	bool bIRE100 = true;
-	update_screen_mode(curr_screenmode,true); //re-initing in bmp mode
+	update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS); //re-initing in bmp mode
 	draw_monoscope(curr_screenmode,bIRE100);
 	bool size_printed = false;
 
@@ -559,8 +559,8 @@ void pattern_monoscope(video_screen_mode_t screenmode)
 		if ( (controller.pressed.button.l) )
 		{
 			curr_screenmode = prev_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,true);
-			update_screen_mode(curr_screenmode,true);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 			draw_monoscope(curr_screenmode,bIRE100);
 			if (size_printed) draw_monoscope_text(curr_screenmode);
 			print_screen_mode(curr_screenmode);
@@ -570,8 +570,8 @@ void pattern_monoscope(video_screen_mode_t screenmode)
 		else if ( (controller.pressed.button.r) )
 		{
 			curr_screenmode = next_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,true);
-			update_screen_mode(curr_screenmode,true);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 			draw_monoscope(curr_screenmode,bIRE100);
 			if (size_printed) draw_monoscope_text(curr_screenmode);
 			print_screen_mode(curr_screenmode);
@@ -590,7 +590,7 @@ void pattern_monoscope(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		else if (controller.pressed.button.x)

@@ -61,54 +61,54 @@ void get_peripheral_line(smpc_peripheral_t *peripheral, char * string, char * st
 	{
 		case ID_DIGITAL:
 			smpc_peripheral_digital_get(peripheral,&digital);
-			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (digital.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
-			if (digital.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
-			if (digital.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
-			if (digital.pressed.button.l) strcat(string,"#GL#W "); else strcat(string,"L ");
-			if (digital.pressed.button.r) strcat(string,"#GR#W "); else strcat(string,"R ");
-			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (digital.pressed.button.a) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.x) strcat(string,"#MX#W "); else strcat(string,"X ");
+			if (digital.pressed.button.y) strcat(string,"#MY#W "); else strcat(string,"Y ");
+			if (digital.pressed.button.z) strcat(string,"#MZ#W "); else strcat(string,"Z ");
+			if (digital.pressed.button.l) strcat(string,"#ML#W "); else strcat(string,"L ");
+			if (digital.pressed.button.r) strcat(string,"#MR#W "); else strcat(string,"R ");
+			if (digital.pressed.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
 			break;
 		case ID_RACING:
 			for (int i=0;i<3;i++)
 	        	racing.raw[i] = peripheral->data[i];
-			if (racing.button.a_trg) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (racing.button.b_trg) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (racing.button.c_trg) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (racing.button.x_trg) strcat(string,"#GX#W "); else strcat(string,"X ");
-			if (racing.button.y_trg) strcat(string,"#GY#W "); else strcat(string,"Y ");
-			if (racing.button.z_trg) strcat(string,"#GZ#W "); else strcat(string,"Z ");
-			if (racing.button.l_trg) strcat(string,"#GL#W "); else strcat(string,"L ");
-			if (racing.button.r_trg) strcat(string,"#GR#W "); else strcat(string,"R ");
-			if (racing.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (racing.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (racing.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (racing.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (racing.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (racing.button.a_trg) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (racing.button.b_trg) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (racing.button.c_trg) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (racing.button.x_trg) strcat(string,"#MX#W "); else strcat(string,"X ");
+			if (racing.button.y_trg) strcat(string,"#MY#W "); else strcat(string,"Y ");
+			if (racing.button.z_trg) strcat(string,"#MZ#W "); else strcat(string,"Z ");
+			if (racing.button.l_trg) strcat(string,"#ML#W "); else strcat(string,"L ");
+			if (racing.button.r_trg) strcat(string,"#MR#W "); else strcat(string,"R ");
+			if (racing.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (racing.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (racing.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (racing.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (racing.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
 			sprintf(buf,"W=%3d",racing.button.wheel); strcat(string2,buf);
 			break;
 		case ID_ANALOG:
 			for (int i=0;i<6;i++)
 	        	analog.pressed.raw[i] = peripheral->data[i];
-			if (analog.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (analog.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (analog.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (analog.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
-			if (analog.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
-			if (analog.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
-			if (analog.pressed.button.l) strcat(string,"#GL#W "); else strcat(string,"L ");
-			if (analog.pressed.button.r) strcat(string,"#GR#W "); else strcat(string,"R ");
-			if (analog.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (analog.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (analog.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (analog.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (analog.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (analog.pressed.button.a) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (analog.pressed.button.b) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (analog.pressed.button.c) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (analog.pressed.button.x) strcat(string,"#MX#W "); else strcat(string,"X ");
+			if (analog.pressed.button.y) strcat(string,"#MY#W "); else strcat(string,"Y ");
+			if (analog.pressed.button.z) strcat(string,"#MZ#W "); else strcat(string,"Z ");
+			if (analog.pressed.button.l) strcat(string,"#ML#W "); else strcat(string,"L ");
+			if (analog.pressed.button.r) strcat(string,"#MR#W "); else strcat(string,"R ");
+			if (analog.pressed.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (analog.pressed.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (analog.pressed.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (analog.pressed.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (analog.pressed.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
 			sprintf(buf,"X = %3d ",analog.pressed.button.axis.x_axis); strcat(string2,buf);
 			sprintf(buf,"Y = %3d ",analog.pressed.button.axis.y_axis); strcat(string2,buf);
 			sprintf(buf,"L = %3d ",analog.pressed.button.trigger.l); strcat(string2,buf);
@@ -118,65 +118,65 @@ void get_peripheral_line(smpc_peripheral_t *peripheral, char * string, char * st
 		case ID_MDMOUSE:
 			for (int i=0;i<3;i++)
 	        	mouse.raw[i] = peripheral->data[i];
-			if (mouse.button.m_btn) strcat(string,"#GM#W "); else strcat(string,"M ");
-			if (mouse.button.r_btn) strcat(string,"#GR#W "); else strcat(string,"R ");
-			if (mouse.button.l_btn) strcat(string,"#GL#W "); else strcat(string,"L ");
-			if (mouse.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
-			if (mouse.button.x_sgn) strcat(string,"#GX+#W "); else strcat(string,"X- ");
-			if (mouse.button.y_sgn) strcat(string,"#GY+#W "); else strcat(string,"Y- ");
-			if (mouse.button.x_ovr) strcat(string,"#GXo#W "); else strcat(string,"Xo ");
-			if (mouse.button.y_ovr) strcat(string,"#GYo#W "); else strcat(string,"Yo ");
+			if (mouse.button.m_btn) strcat(string,"#MM#W "); else strcat(string,"M ");
+			if (mouse.button.r_btn) strcat(string,"#MR#W "); else strcat(string,"R ");
+			if (mouse.button.l_btn) strcat(string,"#ML#W "); else strcat(string,"L ");
+			if (mouse.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
+			if (mouse.button.x_sgn) strcat(string,"#MX+#W "); else strcat(string,"X- ");
+			if (mouse.button.y_sgn) strcat(string,"#MY+#W "); else strcat(string,"Y- ");
+			if (mouse.button.x_ovr) strcat(string,"#MXo#W "); else strcat(string,"Xo ");
+			if (mouse.button.y_ovr) strcat(string,"#MYo#W "); else strcat(string,"Yo ");
 			sprintf(buf,"X = %3d ",mouse.button.x); strcat(string,buf);
 			sprintf(buf,"Y = %3d ",mouse.button.y); strcat(string,buf);
 			break;
 		case ID_KEYBOARD:
 			for (int i=0;i<4;i++)
 	        	keyboard.raw[i] = peripheral->data[i];
-			if (keyboard.button.a_trg) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (keyboard.button.b_trg) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (keyboard.button.c_trg) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (keyboard.button.x_trg) strcat(string,"#GX#W "); else strcat(string,"X ");
-			if (keyboard.button.y_trg) strcat(string,"#GY#W "); else strcat(string,"Y ");
-			if (keyboard.button.z_trg) strcat(string,"#GZ#W "); else strcat(string,"Z ");
-			if (keyboard.button.l_trg) strcat(string,"#GL#W "); else strcat(string,"L ");
-			if (keyboard.button.r_trg) strcat(string,"#GR#W "); else strcat(string,"R ");
-			if (keyboard.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (keyboard.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (keyboard.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (keyboard.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (keyboard.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
-			if (keyboard.button.caps_lock) strcat(string2,"#GCaps#W "); else strcat(string2,"Caps ");
-			if (keyboard.button.num_lock) strcat(string2,"#GNum#W "); else strcat(string2,"Num ");
-			if (keyboard.button.scr_lock) strcat(string2,"#GScroll#W "); else strcat(string2,"Scroll ");
-			if (keyboard.button.mak_flag) strcat(string2,"#GMake#W "); else strcat(string2,"Make ");
-			if (keyboard.button.brk_flag) strcat(string2,"#GBreak#W "); else strcat(string2,"Break ");
+			if (keyboard.button.a_trg) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (keyboard.button.b_trg) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (keyboard.button.c_trg) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (keyboard.button.x_trg) strcat(string,"#MX#W "); else strcat(string,"X ");
+			if (keyboard.button.y_trg) strcat(string,"#MY#W "); else strcat(string,"Y ");
+			if (keyboard.button.z_trg) strcat(string,"#MZ#W "); else strcat(string,"Z ");
+			if (keyboard.button.l_trg) strcat(string,"#ML#W "); else strcat(string,"L ");
+			if (keyboard.button.r_trg) strcat(string,"#MR#W "); else strcat(string,"R ");
+			if (keyboard.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (keyboard.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (keyboard.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (keyboard.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (keyboard.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
+			if (keyboard.button.caps_lock) strcat(string2,"Caps "); else strcat(string2,"#MCaps#W ");
+			if (keyboard.button.num_lock) strcat(string2,"Num "); else strcat(string2,"#MNum#W ");
+			if (keyboard.button.scr_lock) strcat(string2,"Scroll "); else strcat(string2,"#MScroll#W ");
+			if (keyboard.button.mak_flag) strcat(string2,"Make "); else strcat(string2,"#MMake#W ");
+			if (keyboard.button.brk_flag) strcat(string2,"Break "); else strcat(string2,"#MBreak#W ");
 			sprintf(buf,"Code = %2d ",keyboard.button.keycode); strcat(string2,buf);
 			break;
 		case ID_MD3B:
 			smpc_peripheral_digital_get(peripheral,&digital);
-			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (digital.pressed.button.a) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
 			break;
 		case ID_MD6B:
 			smpc_peripheral_digital_get(peripheral,&digital);
-			if (digital.pressed.button.a) strcat(string,"#GA#W "); else strcat(string,"A ");
-			if (digital.pressed.button.b) strcat(string,"#GB#W "); else strcat(string,"B ");
-			if (digital.pressed.button.c) strcat(string,"#GC#W "); else strcat(string,"C ");
-			if (digital.pressed.button.x) strcat(string,"#GX#W "); else strcat(string,"X ");
-			if (digital.pressed.button.y) strcat(string,"#GY#W "); else strcat(string,"Y ");
-			if (digital.pressed.button.z) strcat(string,"#GZ#W "); else strcat(string,"Z ");
-			if (digital.pressed.button.r) strcat(string,"#GMode#W "); else strcat(string,"Mode ");
-			if (digital.pressed.button.up) strcat(string,"#GUp#W "); else strcat(string,"Up ");
-			if (digital.pressed.button.down) strcat(string,"#GDn#W "); else strcat(string,"Dn ");
-			if (digital.pressed.button.left) strcat(string,"#GLt#W "); else strcat(string,"Lt ");
-			if (digital.pressed.button.right) strcat(string,"#GRt#W "); else strcat(string,"Rt ");
-			if (digital.pressed.button.start) strcat(string,"#GSt#W "); else strcat(string,"St ");
+			if (digital.pressed.button.a) strcat(string,"#MA#W "); else strcat(string,"A ");
+			if (digital.pressed.button.b) strcat(string,"#MB#W "); else strcat(string,"B ");
+			if (digital.pressed.button.c) strcat(string,"#MC#W "); else strcat(string,"C ");
+			if (digital.pressed.button.x) strcat(string,"#MX#W "); else strcat(string,"X ");
+			if (digital.pressed.button.y) strcat(string,"#MY#W "); else strcat(string,"Y ");
+			if (digital.pressed.button.z) strcat(string,"#MZ#W "); else strcat(string,"Z ");
+			if (digital.pressed.button.r) strcat(string,"#MMode#W "); else strcat(string,"Mode ");
+			if (digital.pressed.button.up) strcat(string,"#MUp#W "); else strcat(string,"Up ");
+			if (digital.pressed.button.down) strcat(string,"#MDn#W "); else strcat(string,"Dn ");
+			if (digital.pressed.button.left) strcat(string,"#MLt#W "); else strcat(string,"Lt ");
+			if (digital.pressed.button.right) strcat(string,"#MRt#W "); else strcat(string,"Rt ");
+			if (digital.pressed.button.start) strcat(string,"#MSt#W "); else strcat(string,"St ");
 			break;
 		case ID_GUN:
 		default:
@@ -216,7 +216,7 @@ void update_controller(video_screen_mode_t screenmode)
 		{
 			sprintf(buf,"Port %d : direct connection",port);
 		}
-		DrawStringOnBuffer(buf, x, y, FONT_MAGENTA,buffer); y+=10;
+		DrawStringOnBuffer(buf, x, y, FONT_GREEN,buffer); y+=10;
 
 		//drawing the directly connected peripheral
 		if (_port->peripheral->size)
@@ -312,7 +312,7 @@ void hwtest_controller(video_screen_mode_t screenmode)
 		.x_res_doubled = false,
 		.colorsystem = VDP2_TVMD_TV_STANDARD_NTSC,
 	};
-	update_screen_mode(curr_screenmode,false);
+	update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 	
 	int offset = 0;
 	int offset_dir = 1;
@@ -331,7 +331,7 @@ void hwtest_controller(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		else

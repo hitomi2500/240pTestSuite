@@ -207,6 +207,9 @@ void DrawString(char *str, unsigned int x, unsigned int y, unsigned int palette)
 					case 'W':
 						palette = FONT_WHITE;
 						break;
+					case 'M':
+						palette = FONT_MAGENTA;
+						break;
 				}
 			}
 			else
@@ -259,6 +262,9 @@ void DrawStringOnBuffer(char *str, unsigned int x, unsigned int y, unsigned int 
 						break;
 					case 'W':
 						palette = FONT_WHITE;
+						break;
+					case 'M':
+						palette = FONT_MAGENTA;
 						break;
 				}
 			}

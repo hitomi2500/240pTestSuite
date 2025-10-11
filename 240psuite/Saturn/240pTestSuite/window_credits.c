@@ -10,7 +10,7 @@
 #include "input.h"
 #include "background.h"
 
-#define VERSION_NUMBER "Saturn Ver. 0.3 beta 7"
+#define VERSION_NUMBER "Saturn Ver. 0.3 beta 8"
 #define VERSION_DATE __DATE__
 
 //there is no way to fit all credits on-screen, so scrolling is implemented
@@ -76,7 +76,7 @@ void window_credits(video_screen_mode_t screenmode)
 	}
 
 	wait_for_key_unpress();
-	int scroll_counter = 0;
+	int scroll_counter = 100;
 
 	_svin_cmdt_p[VIDEO_VDP1_ORDER_TEXT_SPRITE_0_INDEX].cmd_ya=-300;//move the text out of screen before it is printed
 
@@ -88,7 +88,7 @@ void window_credits(video_screen_mode_t screenmode)
 		.x_res_doubled = false,
 		.colorsystem = VDP2_TVMD_TV_STANDARD_NTSC,
 	};
-	update_screen_mode(creditsScreenMode,false);
+	update_screen_mode(creditsScreenMode,BITMAP_MODE_NONE);
 	draw_bg_with_expansion(creditsScreenMode,true);
 	int _size_y = 240;
 
@@ -111,7 +111,7 @@ void window_credits(video_screen_mode_t screenmode)
 			//quit the pattern
 			wait_for_key_unpress();
 			//restoring the screenmode
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		vdp2_tvmd_vblank_in_wait();

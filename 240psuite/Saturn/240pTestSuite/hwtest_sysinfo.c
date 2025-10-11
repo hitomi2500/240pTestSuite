@@ -189,7 +189,7 @@ void hwtest_sysinfo(video_screen_mode_t screenmode)
 		.x_res_doubled = false,
 		.colorsystem = VDP2_TVMD_TV_STANDARD_NTSC,
 	};
-	update_screen_mode(curr_screenmode,false);
+	update_screen_mode(curr_screenmode,BITMAP_MODE_NONE);
 	
 	int offset = 0;
 	int offset_dir = 1;
@@ -207,7 +207,7 @@ void hwtest_sysinfo(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		else

@@ -133,7 +133,7 @@ void pattern_overscan(video_screen_mode_t screenmode)
 	int _top = 0;
 	int _bottom = 0;
 	int _cursor = 0;
-	update_screen_mode(curr_screenmode,true); //re-initing in bmp mode
+	update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS); //re-initing in bmp mode
 	draw_overscan(curr_screenmode,_top,_bottom,_left,_right,_cursor);
 
 	wait_for_key_unpress();
@@ -149,8 +149,8 @@ void pattern_overscan(video_screen_mode_t screenmode)
 		if ( (controller.pressed.button.l) )
 		{
 			curr_screenmode = prev_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,true);
-			update_screen_mode(curr_screenmode,true);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 			draw_overscan(curr_screenmode,_top,_bottom,_left,_right,_cursor);
 			print_screen_mode(curr_screenmode);
 			wait_for_key_unpress();
@@ -159,8 +159,8 @@ void pattern_overscan(video_screen_mode_t screenmode)
 		else if ( (controller.pressed.button.r) )
 		{
 			curr_screenmode = next_screen_mode(curr_screenmode);
-			update_screen_mode(curr_screenmode,true);
-			update_screen_mode(curr_screenmode,true);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
+			update_screen_mode(curr_screenmode,BITMAP_MODE_16_COLORS);
 			draw_overscan(curr_screenmode,_top,_bottom,_left,_right,_cursor);
 			print_screen_mode(curr_screenmode);
 			wait_for_key_unpress();
@@ -242,7 +242,7 @@ void pattern_overscan(video_screen_mode_t screenmode)
 		{
 			//quit the pattern
 			wait_for_key_unpress();
-			update_screen_mode(screenmode,false);
+			update_screen_mode(screenmode,BITMAP_MODE_NONE);
 			return;
 		}
 		if (mode_display_counter > 0)

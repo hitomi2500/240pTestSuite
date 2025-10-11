@@ -260,7 +260,7 @@ void video_vdp2_set_cycle_patterns_nbg_bmp(video_screen_mode_t screen_mode)
     }
 }
 
-void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode)
+void video_vdp2_init(video_screen_mode_t screen_mode, bitmap_mode_t bmp_mode)
 {
     int *_pointer32;
     //-------------- setup VDP2 -------------------
@@ -275,7 +275,7 @@ void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode)
     struct vdp2_scrn_cell_format cell_format;
     vdp2_scrn_normal_map_t normal_map;
 
-    if (bmp_mode)
+    if ( (bmp_mode == BITMAP_MODE_16_COLORS) || (bmp_mode == BITMAP_MODE_256_COLORS) )
     {
         //bmp mode
         if (is_screenmode_special(screen_mode))
@@ -284,8 +284,13 @@ void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode)
             //setup nbg0
             memset(&bmp_format, 0x00, sizeof(bmp_format));
             bmp_format.scroll_screen = VDP2_SCRN_NBG0;
-            bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_16;
-            bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X512;
+            if (bmp_mode == BITMAP_MODE_16_COLORS) {
+                bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_16;
+                bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X512;
+            } else {
+                bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_256;;
+                bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X256;
+            }
             bmp_format.palette_base = 0x400;
             bmp_format.bitmap_base = VIDEO_VDP2_NBG0_SPECIAL_BMP_START;
             vdp2_scrn_bitmap_format_set(&bmp_format);
@@ -314,8 +319,13 @@ void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode)
             //setup nbg0
             memset(&bmp_format, 0x00, sizeof(bmp_format));
             bmp_format.scroll_screen = VDP2_SCRN_NBG0;
-            bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_16;
-            bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X512;
+            if (bmp_mode == BITMAP_MODE_16_COLORS) {
+                bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_16;
+                bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X512;
+            } else {
+                bmp_format.ccc = VDP2_SCRN_CCC_PALETTE_256;
+                bmp_format.bitmap_size = VDP2_SCRN_BITMAP_SIZE_1024X256;
+            }
             bmp_format.palette_base = 0x800;
             bmp_format.bitmap_base = VIDEO_VDP2_NBG0_CHPNDR_START;
             vdp2_scrn_bitmap_format_set(&bmp_format);
@@ -637,10 +647,10 @@ void video_vdp2_init(video_screen_mode_t screen_mode, bool bmp_mode)
     vdp2_sync();
 
     //setting cycle patterns for nbg access
-    if (bmp_mode)
-        video_vdp2_set_cycle_patterns_nbg_bmp(screen_mode);
-    else
+    if (bmp_mode == BITMAP_MODE_NONE)
         video_vdp2_set_cycle_patterns_nbg(screen_mode);
+    else
+        video_vdp2_set_cycle_patterns_nbg_bmp(screen_mode);
 }
 
 void video_vdp2_deinit()

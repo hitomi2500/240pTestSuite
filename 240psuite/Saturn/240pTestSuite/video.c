@@ -27,7 +27,7 @@
 
 uint8_t video_init_done = 0;
 
-void video_init(video_screen_mode_t screen_mode, bool bmp_mode)
+void video_init(video_screen_mode_t screen_mode, bitmap_mode_t bmp_mode)
 {
     video_init_done = 0;
 
@@ -354,7 +354,7 @@ bool is_screenmode_special(video_screen_mode_t screenmode)
 	return ( (VIDEO_SCANMODE_480P == screenmode.scanmode) && (screenmode.x_res_doubled) ) ? true : false;
 }
 
-void update_screen_mode(video_screen_mode_t screenmode, bool bmp_mode)
+void update_screen_mode(video_screen_mode_t screenmode, bitmap_mode_t bmp_mode)
 {
 	//ClearTextLayer();
 	video_deinit();
