@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "fs.h"
 #include "font.h"
 #include "input.h"
 #include "video.h"

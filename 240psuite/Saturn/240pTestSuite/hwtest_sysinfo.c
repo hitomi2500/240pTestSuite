@@ -171,7 +171,9 @@ void draw_sysinfo(video_screen_mode_t screenmode)
 			break;
 	}
 	DrawString(buf, 20, 80, FONT_WHITE);
-
+	
+	sprintf(buf,"Press B to Exit");
+	DrawString(buf, 160 - strlen(buf)*3, 200, FONT_WHITE);
 }
 
 void hwtest_sysinfo(video_screen_mode_t screenmode)

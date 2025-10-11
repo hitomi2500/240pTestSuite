@@ -28,7 +28,6 @@ SH_PROGRAM:= 240pSuite
 SH_SRCS:= \
     background.c \
     bootlogo.c \
-    fs.c \
     font.c \
     input.c \
     video.c \
