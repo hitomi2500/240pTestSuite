@@ -81,6 +81,8 @@
 
 extern uint8_t asset_bootlogo_bg[];
 extern uint8_t asset_bootlogo_bg_end[];
+extern uint8_t asset_ponesnd_bg[];
+extern uint8_t asset_ponesnd_bg_end[];
 extern uint8_t asset_sound_driver[];
 extern uint8_t asset_sound_driver_end[];
 extern uint8_t asset_tones_pcm[];
@@ -121,6 +123,17 @@ int main(void)
 	video_init(screenMode,false);
 	video_vdp2_set_cycle_patterns_cpu();
 	background_set_from_assets(asset_bootlogo_bg,(int)(asset_bootlogo_bg_end-asset_bootlogo_bg),VIDEO_VDP2_NBG0_PNDR_START,VIDEO_VDP2_NBG0_CHPNDR_START);
+	video_vdp2_set_cycle_patterns_nbg(screenMode);
+
+	//wait for 60 frames, either 1s or 1.2s
+	for (int i=0;i<60;i++)
+		vdp2_tvmd_vblank_in_next_wait(1);
+
+	background_fade_to_black();
+
+	//show ponesound logo in 240p
+	video_vdp2_set_cycle_patterns_cpu();
+	background_set_from_assets(asset_ponesnd_bg,(int)(asset_ponesnd_bg_end-asset_ponesnd_bg),VIDEO_VDP2_NBG0_PNDR_START,VIDEO_VDP2_NBG0_CHPNDR_START);
 	video_vdp2_set_cycle_patterns_nbg(screenMode);
 
 	//wait for 60 frames, either 1s or 1.2s
