@@ -184,7 +184,7 @@ int main(void)
 					DrawString("Configuration",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("Credits",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("Help",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
-					menu_size = 6;
+					menu_size = 7;
 					break;
 				case MENU_PATTERNS:
 					DrawString("Color & Black Levels",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
