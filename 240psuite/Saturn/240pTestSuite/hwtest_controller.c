@@ -94,8 +94,7 @@ void get_peripheral_line(smpc_peripheral_t *peripheral, char * string, char * st
 			sprintf(buf,"W=%3d",racing.button.wheel); strcat(string2,buf);
 			break;
 		case ID_ANALOG:
-			for (int i=0;i<6;i++)
-	        	analog.pressed.raw[i] = peripheral->data[i];
+			smpc_peripheral_analog_get(peripheral,&analog);
 			if (analog.pressed.button.a) strcat(string,"#MA#W "); else strcat(string,"A ");
 			if (analog.pressed.button.b) strcat(string,"#MB#W "); else strcat(string,"B ");
 			if (analog.pressed.button.c) strcat(string,"#MC#W "); else strcat(string,"C ");
@@ -251,7 +250,7 @@ void update_controller(video_screen_mode_t screenmode)
 					}
 				}
 	}
-	DrawStringOnBuffer("Press Left + Start on controller 1 to Exit", 20, 200, FONT_WHITE,buffer);
+	DrawStringOnBuffer("Press Left + Start on any controller to Exit", 20, 200, FONT_WHITE,buffer);
 	
 	//syncing data
 	vdp2_tvmd_vblank_out_wait();

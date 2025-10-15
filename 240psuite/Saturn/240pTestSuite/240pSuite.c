@@ -90,7 +90,7 @@ extern uint8_t asset_tones_pcm_end[];
 extern uint8_t asset_beep_pcm[];
 extern uint8_t asset_beep_pcm_end[];
 
-int global_frame_count;
+int global_frame_count = 0;
 
 static void suite_vblank_out_handler(void *work __unused)
 {
