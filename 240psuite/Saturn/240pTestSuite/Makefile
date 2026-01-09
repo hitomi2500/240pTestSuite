@@ -46,6 +46,7 @@ SH_SRCS:= \
     image_big_digits.c \
     image_buzzbomber.c \
     image_not_really.c \
+    memtest.c \
     pattern_100ire.c \
     pattern_colorbars.c \
     pattern_colorbars_grayscale.c \

@@ -1,6 +1,6 @@
-#ifndef HWTEST_SYSINFO_H
-#define HWTEST_SYSINFO_H
+#ifndef HWTEST_MEMTEST_H
+#define HWTEST_MEMTEST_H
 
-void hwtest_sysinfo(video_screen_mode_t screenmode);
+void hwtest_memtest(video_screen_mode_t screenmode);
 
-#endif /* !HWTEST_SYSINFO_H */
+#endif /* !HWTEST_MEMTEST_H */
