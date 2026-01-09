@@ -40,6 +40,8 @@ SH_SRCS:= \
     audiotest_sound.c \
     audiotest_sync.c \
     hwtest_controller.c \
+    hwtest_carttest.c \
+    hwtest_memtest.c \
     hwtest_sysinfo.c \
     image_big_digits.c \
     image_buzzbomber.c \

@@ -265,8 +265,10 @@ int main(void)
 				case MENU_HARDWARE_TESTS:
 					DrawString("Express Peripheral Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					//DrawString("Controller Ports Device List",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
+					DrawString("Memory Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
+					DrawString("Cartridge Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
+					DrawString("CD/ODE Reliability Test",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("System Information",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
-					//DrawString("Memory Viewer",x, y+_fh*pos, sel == pos ? FONT_RED : FONT_WHITE); pos++;
 					pos++;
 					DrawString("Back to Main Menu",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
 					DrawString("Configuration",x, y+_fh*pos, sel == pos-1 ? FONT_RED : FONT_WHITE); pos++;
@@ -691,19 +693,28 @@ int main(void)
 								hwtest_controller(screenMode);
 								break;							
 							case 1:
-								hwtest_sysinfo(screenMode);
-								break;							
+								hwtest_memtest(screenMode);
+								break;
 							case 2:
+								hwtest_carttest(screenMode);
+								break;
+							case 3:
+								//todo: add cd/ode reliability test
+								break;
+							case 4:
+								hwtest_sysinfo(screenMode);
+								break;	
+							case 5:
 								menu_id = MENU_MAIN;
-								sel = 2;
+								sel = 3;
 								redrawMenu = true;
 								break;	
-							case 3:
+							case 6:
 								menu_id = MENU_CONFIGURATION;
 								sel = 0;
 								redrawMenu = true;
 								break;
-							case 4:
+							case 7:
 								help(screenMode);
 								redrawMenu = true;
 								redrawBG = true;
