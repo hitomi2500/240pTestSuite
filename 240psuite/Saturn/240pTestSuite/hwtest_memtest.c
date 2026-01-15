@@ -9,6 +9,12 @@
 #include "ire.h"
 #include "ponesound.h"
 
+extern uint8_t asset_sound_driver[];
+extern uint8_t asset_sound_driver_end[];
+static int prev_mem = 0;
+static int statuses[8] = {0};
+static int statuses_prev[8] = {0};
+
 #define MEMS_COUNT 7
 
 char * memtest_get_name_by_id (int mem_id){
@@ -31,14 +37,14 @@ char * memtest_get_name_by_id (int mem_id){
 		case 5: 
 			return " 512K VDP2 VRAM ";
 			break; 
-		case 6: 
+		case 7: 
 			return "  32K Backup RAM ";
 			break; 
-		case 7: 
-			return " 512K CD Block RAM ";
+		case 6: 
+			return "   4K VDP2 Color RAM ";
 			break; 
 		case 8: 
-			return "   4K VDP2 Color RAM ";
+			return " 512K CD Block RAM ";
 			break; 
 			}
 	return " UNKNOWN RAM ";
@@ -54,13 +60,13 @@ int memtest_get_size_by_id (int mem_id){
 		case 3: 
 		case 4: 
 		case 5: 
-		case 7: 
+		case 8: 
 			return 512*1024;
 			break;
-		case 6: 
+		case 7: 
 			return 32*1024;
 			break; 
-		case 8: 
+		case 6: 
 			return 4*1024;
 			break; 
 	}
@@ -89,10 +95,10 @@ int memtest_get_address_by_id (int mem_id){
 			return VDP2_VRAM(0);
 			break;
 		case 6: 
-			return 0; //TODO
+			return VDP2_CRAM(0);
 			break;
 		case 7: 
-			return 0; //TODO
+			return 0x20180000; //backup ram
 			break; 
 		case 8: 
 			return 0; //TODO
@@ -119,6 +125,8 @@ char * memtest_get_status_string (int status){
 void draw_memtest(video_screen_mode_t screenmode, int current_mem)
 {
 	char buf[256];
+	prev_mem = 0;
+	for (int i=0;i<8;i++) statuses_prev[i] = 0;
 	//removing text
 	ClearTextLayer();
 	
@@ -160,19 +168,22 @@ void draw_memtest(video_screen_mode_t screenmode, int current_mem)
 
 	sprintf(buf,"Press A to Run selected memory test");
 	DrawString(buf, 30, 160, FONT_WHITE);
-	sprintf(buf,"Press X to Run all safe tests");
-	DrawString(buf, 30, 160+_fh, FONT_WHITE);
-	sprintf(buf,"Press Z to Run all tests");
-	DrawString(buf, 30, 160+_fh*2, FONT_WHITE);
+	//sprintf(buf,"Press X to Run all safe tests");
+	//DrawString(buf, 30, 160+_fh, FONT_WHITE);
+	//sprintf(buf,"Press Z to Run all tests");
+	//DrawString(buf, 30, 160+_fh*1, FONT_WHITE);
 	sprintf(buf,"Press B to Exit");
+	DrawString(buf, 30, 160+_fh*1, FONT_WHITE);
+	sprintf(buf,"Note : framebuffers test doesn't show any");
 	DrawString(buf, 30, 160+_fh*3, FONT_WHITE);
+	sprintf(buf,"progress and takes ~10 minutes");
+	DrawString(buf, 30, 160+_fh*4, FONT_WHITE);
 }
 
 void redraw_memtest(video_screen_mode_t screenmode, int current_mem, int statuses[8], int offsets[8])
 {
 	char buf[256];
 	char buf2[16];
-	static int prev_mem = 0;
 
 	strcpy(buf,memtest_get_name_by_id(prev_mem));
 	while (strlen(buf) <38)
@@ -215,7 +226,6 @@ void redraw_statuses_memtest(video_screen_mode_t screenmode, int current_mem, in
 {
 	char buf[256];
 	char buf2[16];
-	static int statuses_prev[8] = {0};
 
 	//redraw for every mem that is not prev and current, but in progress
 	for (int i=0;i<MEMS_COUNT;i++)  {
@@ -244,7 +254,6 @@ void hwtest_memtest(video_screen_mode_t screenmode)
 	bool key_pressed = false;
 	int current_mem = 0;
 	bool redraw = false;
-	int statuses[8] = {0};
 	int offsets[8] = {0};
 	int errors[8] = {0};
 
@@ -277,14 +286,14 @@ void hwtest_memtest(video_screen_mode_t screenmode)
 		else if	( (controller.pressed.button.up) )
 		{
 			current_mem--;
-			if (current_mem < 0) current_mem = 7;
+			if (current_mem < 0) current_mem = MEMS_COUNT-1;
 			wait_for_key_unpress();
 			redraw = true;
 		}
 		else if	( (controller.pressed.button.down) )
 		{
 			current_mem++;
-			if (current_mem > 7) current_mem = 0;
+			if (current_mem >= MEMS_COUNT) current_mem = 0;
 			wait_for_key_unpress();
 			redraw = true;
 			
@@ -296,21 +305,59 @@ void hwtest_memtest(video_screen_mode_t screenmode)
 			wait_for_key_unpress();
 			redraw = true;
 		}
+		/*else if	( (controller.pressed.button.z) )
+		{
+			for (int i=0;i <MEMS_COUNT; i++) {
+				statuses[i] = -1;
+				offsets[i] = 0;
+			}
+			wait_for_key_unpress();
+			redraw = true;
+		}*/
 		else
 			key_pressed = false;
 		//testing logic
 		for (int mem=0; mem<MEMS_COUNT; mem++)
 		{
+			int test_granularity = 1024;
+			if (4==mem) test_granularity = 32;
 			if (statuses[mem] == -1) {
 				//if it's a start, reset error counter to 0 and do the lines test first
 				if (0 == offsets[mem]) {
-					errors[mem]= memtest_test_lines(memtest_get_address_by_id(mem),memtest_get_size_by_id(mem));
+					//for sound ram stop the sound CPU at the start
+					if ( mem == 2) {
+						smpc_smc_wait(0);
+						smpc_smc_call(SMPC_SMC_SNDOFF);
+						errors[mem]= memtest_test_lines(memtest_get_address_by_id(mem),memtest_get_size_by_id(mem));
+					}
+					//for vdp1 framebufers, mark current buffer as "first"
+					else if ( mem == 4) {
+						volatile vdp1_ioregs_t * const _regs = (volatile vdp1_ioregs_t *)VDP1_IOREG_BASE;
+						_regs->ptmr = 0;//VDP1_PTMR_IDLE;
+						volatile uint16_t *p16 = (uint16_t*)(VDP1_FB(0x3FFFE));
+						p16[0] = 0xAA55;
+						while ( p16[0] == 0xAA55 );
+						errors[mem] = memtest_test_lines(memtest_get_address_by_id(mem),memtest_get_size_by_id(mem)/2);
+						p16[0] = 0x3333;
+						while ( p16[0] == 0x3333 );
+						errors[mem] += memtest_test_lines(memtest_get_address_by_id(mem),memtest_get_size_by_id(mem)/2);
+					}
+					else
+						errors[mem]= memtest_test_lines(memtest_get_address_by_id(mem),memtest_get_size_by_id(mem));
 				}
-				//testing with 32kB chunks in a single step
-				errors[mem] += memtest_test_area(memtest_get_address_by_id(mem)+offsets[mem],1*1024);
-				offsets[mem] += 1*1024;
+				//testing with 1kB chunks in a single step
+				errors[mem] += memtest_test_area(memtest_get_address_by_id(mem)+offsets[mem],test_granularity);
+				offsets[mem] += test_granularity;
 				if (offsets[mem] >= memtest_get_size_by_id(mem)) {
 					//test is over
+					//for sound ram restart the sound CPU at the end (doesn't work)
+					if ( mem == 2)
+						ponesound_load_driver(asset_sound_driver, asset_sound_driver_end - asset_sound_driver,ADX_MASTER_768);//load driver binary to SMPC
+					//for vdp1 fb restore drawing
+					if ( mem == 4) {
+						volatile vdp1_ioregs_t * const _regs = (volatile vdp1_ioregs_t *)VDP1_IOREG_BASE;
+						_regs->ptmr = 2;//VDP1_PTMR_AUTO;
+					}
 					if (errors[mem])
 						statuses[mem] = errors[mem];
 					else

@@ -9,4 +9,5 @@ else
   echo "No flash found, not updating WASCALDR.BIN"
 fi
 #/opt/emulators/ymir/ymir-sdl3 240pSuite.iso
-/opt/emulators/yabause/yabause -i 240pSuite.iso
+#/opt/emulators/yabause/yabause -i 240pSuite.iso
+/opt/emulators/mednafen/mednafen 240pSuite.cue

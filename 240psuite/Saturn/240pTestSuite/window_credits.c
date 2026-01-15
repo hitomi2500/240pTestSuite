@@ -10,7 +10,7 @@
 #include "input.h"
 #include "background.h"
 
-#define VERSION_NUMBER "Saturn Ver. 0.3 beta 9"
+#define VERSION_NUMBER "Saturn Ver. 0.3 beta 10"
 #define VERSION_DATE __DATE__
 
 //there is no way to fit all credits on-screen, so scrolling is implemented
